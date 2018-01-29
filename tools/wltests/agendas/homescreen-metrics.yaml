@@ -1,0 +1,24 @@
+# This is an example of a simple agenda: It simply runs the jankbench workload 3
+# times. The workload parameters are left to the workload's default, and target
+# and instrumentation configuration will either be read from
+# $LISA_HOME/tools/wltests/wa_user_directory/config.yaml or the defaults will be
+# used.
+
+global:
+  # Collect energy data, ftrace files, and dmesg
+  # You may want to edit your config.yaml to set up the energy_measurement
+  # instrument (an example configuration is provided in this repo).
+  instrumentation: [energy_measurement, trace-cmd]
+  trace-cmd:
+    buffer_size: 120000
+    report: False
+  trace_events: ['sched_switch', 'sched_wakeup', 'sched_wakeup_new', 'sched_load_avg_cpu', 'sched_load_avg_task', 'cpu_capacity', 'cpu_frequency', 'cpu_idle', 'sched_boost_cpu', 'sched_boost_task', 'sched_energy_diff', 'ipi*', 'sched_find_best_target', 'sched_group_energy', 'sched_energy_calc_duration', 'workqueue*', 'sched_sugov_util']
+  # Do everything 5 times, if not otherwise specified by the specific workload
+  iterations: 5
+
+workloads:
+  - name: homescreen
+    classifiers:
+       tag: sit_10s
+    workload_parameters:
+      duration: 10
